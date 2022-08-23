@@ -11,7 +11,7 @@ from utils.request_codes import RequestCode
 @app.route("/<path:path>")
 def route_index(path=None):
     if not session.get("joined_page"):
-        return make_response("", RequestCode.ClientError.Unauthorized)
+        return make_response("", RequestCode.ClientError.Forbidden)
 
     package = session.get("joined_page")
     if package not in PACKAGES:
@@ -20,8 +20,8 @@ def route_index(path=None):
     if path is None:
         return send_file(os.path.join(PACKAGE_CACHE_FOLDER, package, PACKAGES[package]["entry"]))
 
-    elif path in PACKAGES[package]["routes"]:
-        return send_file(os.path.join(PACKAGE_CACHE_FOLDER, package, path))
+    elif path in PACKAGES[package]["routes"] or f"{path}.html" in PACKAGES[package]["routes"]:
+        return send_file(os.path.join(PACKAGE_CACHE_FOLDER, package, f"{path}.html" if not path.endswith(".html") else path))
 
     else:
         path = os.path.join(PACKAGE_CACHE_FOLDER, package, path)
@@ -34,6 +34,7 @@ def route_index(path=None):
 def route_join(page):
     if page in PACKAGES:
         session["joined_page"] = page
+        session.permanent = True
         return redirect("/")
     else:
         return make_response("", RequestCode.ClientError.NotFound)

@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from flask import Flask
 from tools.config import Config
@@ -8,6 +9,7 @@ config = Config(os.path.join(working_dir, 'config.ini'))
 
 app = Flask(__name__)
 app.secret_key = config["SECRET_KEY"]
+app.permanent_session_lifetime = timedelta(days=9999)
 
 with app.app_context():
     from tools.route_loader import load_routes
