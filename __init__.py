@@ -4,7 +4,7 @@ from datetime import timedelta
 from flask import Flask
 from tools.config import Config
 
-working_dir = os.path.dirname(os.path.realpath(__name__))
+working_dir = os.path.dirname(os.path.realpath(__file__))
 config = Config(os.path.join(working_dir, 'config.ini'))
 
 app = Flask(__name__)
