@@ -1,0 +1,7 @@
+{
+    "id": "test_website",
+    "name": "Test Website",
+    "description": "Test website",
+    "author": "Davis_Software",
+    "entry": "index.html"
+}
