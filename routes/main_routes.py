@@ -1,6 +1,6 @@
 import os
 
-from __init__ import app
+from __init__ import app, config
 from flask import make_response, session, redirect, send_file
 
 from tools.package_loader import PACKAGES, PACKAGE_CACHE_FOLDER
@@ -11,7 +11,11 @@ from utils.request_codes import RequestCode
 @app.route("/<path:path>")
 def route_index(path=None):
     if not session.get("joined_page"):
-        return make_response("", RequestCode.ClientError.Forbidden)
+        if config["DEFAULT_PAGE"] is not None and path is None:
+            session["joined_page"] = config["DEFAULT_PAGE"]
+            session.permanent = True
+        else:
+            return make_response("", RequestCode.ClientError.Forbidden)
 
     package = session.get("joined_page")
     if package not in PACKAGES:
@@ -30,6 +34,7 @@ def route_index(path=None):
         return make_response("", RequestCode.ClientError.NotFound)
 
 
+@app.route("/j/<page>")
 @app.route("/join/<page>")
 def route_join(page):
     if page in PACKAGES:
