@@ -1,7 +1,7 @@
 import os
 
 from __init__ import app, config
-from flask import make_response, session, redirect, send_file
+from flask import make_response, session, redirect, send_file, render_template_string
 
 from tools.package_loader import PACKAGES, PACKAGE_CACHE_FOLDER
 from utils.request_codes import RequestCode
@@ -34,6 +34,20 @@ def route_index(path=None):
         return make_response("", RequestCode.ClientError.NotFound)
 
 
+@app.route("/d")
+def route_default():
+    if config["DEFAULT_PAGE"] is not None:
+        package = config["DEFAULT_PAGE"]
+
+        session["joined_page"] = package
+        session.permanent = True
+
+        return send_file(os.path.join(PACKAGE_CACHE_FOLDER, package, PACKAGES[package]["entry"]))
+
+    else:
+        return make_response("", RequestCode.ClientError.Forbidden)
+
+
 @app.route("/j/<page>")
 @app.route("/join/<page>")
 def route_join(page):
@@ -43,3 +57,9 @@ def route_join(page):
         return redirect("/")
     else:
         return make_response("", RequestCode.ClientError.NotFound)
+
+
+@app.route("/list")
+def route_list():
+    links = map(lambda x: f"<a href='/j/{x}'>{x}</a><br/>", PACKAGES.keys())
+    return render_template_string("".join(links))
