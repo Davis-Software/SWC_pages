@@ -1,7 +1,7 @@
 import os
 
 from __init__ import app, config
-from flask import make_response, session, redirect, send_file, render_template_string
+from flask import make_response, session, redirect, send_file, render_template_string, abort
 
 from tools.package_loader import PACKAGES, PACKAGE_CACHE_FOLDER
 from utils.request_codes import RequestCode
@@ -61,5 +61,7 @@ def route_join(page):
 
 @app.route("/list")
 def route_list():
-    links = map(lambda x: f"<a href='/j/{x}'>{x}</a><br/>", PACKAGES.keys())
-    return render_template_string("".join(links))
+    if config.get_bool("ALLOW_LIST"):
+        links = map(lambda x: f"<a href='/j/{x}'>{x}</a><br/>", PACKAGES.keys())
+        return render_template_string("".join(links))
+    abort(RequestCode.ClientError.NotFound)
