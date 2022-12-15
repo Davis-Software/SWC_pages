@@ -16,4 +16,6 @@ with app.app_context():
     from tools.package_loader import load_packages
 
     load_routes(working_dir, "routes")
-    load_packages()
+    load_packages(
+        keep_watching=config["WATCH_FOR_CHANGES"]
+    )
