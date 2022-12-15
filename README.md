@@ -35,14 +35,15 @@ ALLOW_LIST=true
 ```
 
 ###### Explanation:
-| Parameter    | Description                                        |
-|--------------|----------------------------------------------------|
-| SECRET_KEY   | Flask session secret key                           |
-| HOST         | Host to listen on                                  |
-| PORT         | Port to listen on                                  |
-| DEBUG        | Enable debug mode                                  |
-| DEFAULT_PAGE | ID of Default page to show if no page is specified |
-| ALLOW_LIST   | Enable allow list                                  |
+| Parameter         | Description                                        |
+|-------------------|----------------------------------------------------|
+| SECRET_KEY        | Flask session secret key                           |
+| HOST              | Host to listen on                                  |
+| PORT              | Port to listen on                                  |
+| DEBUG             | Enable debug mode                                  |
+| DEFAULT_PAGE      | ID of Default page to show if no page is specified |
+| ALLOW_LIST        | Enable allow list                                  |
+| WATCH_FOR_CHANGES | Enable automatic page reload on file change        |
 
 
 ### Routing
