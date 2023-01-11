@@ -42,8 +42,7 @@ def route_default():
         session["joined_page"] = package
         session.permanent = True
 
-        return send_file(os.path.join(PACKAGE_CACHE_FOLDER, package, PACKAGES[package]["entry"]))
-
+        return redirect("/")
     else:
         return make_response("", RequestCode.ClientError.Forbidden)
 
